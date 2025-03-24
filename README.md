@@ -3,13 +3,13 @@
 ## Setup Instructions:
 First, Clone the repo:
 ``` 
-git clone https://github.com/ashiskumar-1999/task-management-ui.git
+git clone https://github.com/ashiskumar-1999/1acre-ui.git
 ```
 Install the Dependencies:
 ```
 yarn
 ```
-create a .env file to store the Google_maps_api_key and paste the generated key like this:
+create a .env file to store the Google_maps_api_key and paste the generated key in this format:
 ```
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=""
 ```
