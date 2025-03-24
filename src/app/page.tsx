@@ -2,8 +2,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import PropertyMapComponent from "@/components/PropertyMap";
 
 export default function Home() {
+  const [mapData, setMapData] = useState([]);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   const fetchProperty = async ({ pageParam = 1 }) => {
@@ -50,8 +52,25 @@ export default function Home() {
     };
   }, [hasNextPage, fetchNextPage]);
 
+  useEffect(() => {
+    const fetchMapData = async () => {
+      try {
+        const propertyMapData = await fetch(
+          "https://prod-be.1acre.in/lands/landmaps/?seller_id=211"
+        );
+        const data = await propertyMapData.json();
+        console.log("Property map data fetched:", data.results.length);
+        setMapData(data.results);
+      } catch (error) {
+        console.error("Error fetching property map data:", error);
+      }
+    };
+    fetchMapData();
+  }, []);
+
   return (
     <>
+      <PropertyMapComponent mapData={mapData} />
       <div className="grid grid-cols-1 place-items-center md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-10">
         {data?.pages.map((page) =>
           page.results.map((property: any) => (
