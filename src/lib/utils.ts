@@ -1,4 +1,4 @@
-import { LandSize, LandPrice, ProcessedProperty } from "@/types";
+import { LandSize, LandPrice } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -33,9 +33,4 @@ export const formatPrice = (landPrice: LandPrice | undefined): string => {
   if (lakh > 0) result += `${result ? " " : "₹ "}${lakh} Lakh`;
 
   return result ? result + "/acre" : "N/A";
-};
-
-// Helper to get marker color based on price
-export const getMarkerColor = (property: ProcessedProperty): string => {
-  return "yellow";
 };

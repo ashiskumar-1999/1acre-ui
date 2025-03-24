@@ -1,14 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  InfoWindow,
-} from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
 import { ProcessedProperty, PropertyData } from "@/types";
-import { formatLandSize, formatPrice, getMarkerColor } from "@/lib/utils";
+import { formatLandSize, formatPrice } from "@/lib/utils";
 
 interface PropertyMapComponentProps {
   mapData: PropertyData[];
@@ -69,9 +64,9 @@ const PropertyMapComponent: React.FC<PropertyMapComponentProps> = ({
             onClick={() => handleMarkerClick(property)}
           >
             <div
-              className="w-3 h-3 rounded-full"
+              className="w-4 h-4 rounded-full"
               style={{
-                backgroundColor: getMarkerColor(property),
+                backgroundColor: "#efd503",
                 border: "2px solid white",
                 boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
               }}

@@ -3,12 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import PropertyMapComponent from "@/components/PropertyMap";
+import { ApiResponse } from "@/types";
 
 export default function Home() {
   const [mapData, setMapData] = useState([]);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const fetchProperty = async ({ pageParam = 1 }) => {
+  const fetchProperty = async ({ pageParam = 1 }): Promise<ApiResponse> => {
     try {
       const fetchPropertyData = await fetch(
         `https://prod-be.1acre.in/lands/?seller=211&page=${pageParam}&page_size=10`
@@ -16,6 +17,7 @@ export default function Home() {
       return fetchPropertyData.json();
     } catch (error) {
       console.error(error);
+      throw new Error("Problem while fetching the data");
     }
   };
 
@@ -36,6 +38,8 @@ export default function Home() {
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
+    const currentRef = loadMoreRef.current; // Capture the current ref
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage) {
@@ -45,7 +49,7 @@ export default function Home() {
       { threshold: 1 }
     );
 
-    if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+    if (currentRef) observer.observe(currentRef);
 
     return () => {
       if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
@@ -73,7 +77,7 @@ export default function Home() {
       <PropertyMapComponent mapData={mapData} />
       <div className="grid grid-cols-1 place-items-center md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-10">
         {data?.pages.map((page) =>
-          page.results.map((property: any) => (
+          page.results.map((property) => (
             <PropertyCard
               key={property.id}
               imageURL={property.land_media}
